@@ -82,7 +82,7 @@ for id in water2.find_all('tbody'):
 print(df.dtypes)
 
 convert_dict = {'CurrentWaterLevel': float, 'Normal':float,'Warning':float,
-'Danger':float, 'Alert':float}
+'Danger':float, 'Alert':float}	
 df = df.astype(convert_dict)
 print(df.dtypes)
 #df.at[0,'CurrentWaterLevel']=96.6 testing purpose
