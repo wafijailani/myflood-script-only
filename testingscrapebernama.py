@@ -71,6 +71,8 @@ for i in range(0,len(pages)):
         addrow = {"Title":title,"PictureLink":image,"News":newformat}
         df = df.append(addrow,ignore_index=True)
 
+df['id'] = df.index
+df = df[['id', 'Title', 'PictureLink', 'News']]
 
 #print(df)
 # con = MySQLdb.connect(user='root', password='',host='localhost', database='website_myflood')
