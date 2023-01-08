@@ -99,12 +99,12 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #print(df.apply(f, axis=1))
 
 #df.to_sql('users', con=mydb)
-con = MySQLdb.connect(user='root', password='',host='localhost', database='website_myflood')
+con = MySQLdb.connect(user='root', password='',host='localhost', database='myfloodlaravel')
 concursor = con.cursor()
 
 
 
-engine = create_engine("mysql+pymysql://root:@localhost/website_myflood")
+engine = create_engine("mysql+pymysql://root:@localhost/myfloodlaravel")
 df.to_sql('klscrape', con = engine, if_exists='replace')
 
 

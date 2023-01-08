@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 
 df = pd.DataFrame(columns = ["Title","PictureLink","News"])
 
-pages = ['1','2']
+pages = ['1','2','3']
 for i in range(0,len(pages)):
     url = 'https://www.bernama.com/en/search.php?cat1=all&terms=flood&page=' + pages[i]
 
