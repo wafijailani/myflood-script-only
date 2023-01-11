@@ -16,7 +16,6 @@ client = Client(account_sid, auth_token)
 
 # Step 1: Sending a HTTP request to a URL
 url = "http://publicinfobanjir.water.gov.my/aras-air/data-paras-air/aras-air-data?state=WLH&district=ALL&station=ALL&lang=en" # for Wilayah Perseketuan KL 
-#url = "http://publicinfobanjir.water.gov.my/aras-air/data-paras-air/aras-air-data?state=SEL&district=ALL&station=ALL&lang=en" #for Selangor
 r = requests.get(url)
 soup = BeautifulSoup(r.text, 'html.parser')
 #print(soup)
@@ -85,7 +84,7 @@ convert_dict = {'CurrentWaterLevel': float, 'Normal':float,'Warning':float,
 'Danger':float, 'Alert':float}	
 df = df.astype(convert_dict)
 print(df.dtypes)
-#df.at[0,'CurrentWaterLevel']=96.6 testing purpose
+df.at[0,'CurrentWaterLevel']=96.55
 
 df['smsAlert'] = np.where(df['CurrentWaterLevel']>df['Alert'], 'sms', 'nosms')
 df['smsWarning'] = np.where(df['CurrentWaterLevel']>df['Warning'], 'sms', 'nosms')
@@ -95,25 +94,18 @@ df['smsDanger'] = np.where(df['CurrentWaterLevel']>df['Danger'], 'sms', 'nosms')
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 	print(df)
 
-#   return 'hello' if x['CurrentWaterLevel'] >= x['Alert'] else 'no' 
-#print(df.apply(f, axis=1))
-
-#df.to_sql('users', con=mydb)
 con = MySQLdb.connect(user='root', password='',host='localhost', database='myfloodlaravel')
 concursor = con.cursor()
 
 
 
-engine = create_engine("mysql+pymysql://root:@localhost/myfloodlaravel")
+engine = create_engine("mysql+pymysql://root:@localhost/myfloodlaravel")	
 df.to_sql('klscrape', con = engine, if_exists='replace')
-
-
-
 
 for i, row in df.iterrows():
 	if row['smsAlert'] == 'sms':
 		x = df['District'][i]
-		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
+		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood - Alert Level',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
 		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
 		result = concursor.fetchall()
 		print(result)
@@ -123,7 +115,7 @@ for i, row in df.iterrows():
 for i, row in df.iterrows():
 	if row['smsWarning'] == 'sms':
 		x = df['District'][i]
-		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
+		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood - Warning Level',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
 		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
 		result = concursor.fetchall()
 		print(result)
@@ -133,7 +125,7 @@ for i, row in df.iterrows():
 for i, row in df.iterrows():
 	if row['smsDanger'] == 'sms':
 		x = df['District'][i]
-		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
+		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood - Danger Level',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
 		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
 		result = concursor.fetchall()
 		print(result)

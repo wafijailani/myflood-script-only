@@ -80,6 +80,9 @@ for id in water2.find_all('tbody'):
 # else update
 print(df.dtypes)
 
+#df['CurrentWaterLevel'][32]=4.8
+
+
 convert_dict = {'CurrentWaterLevel': float, 'Normal':float,'Warning':float,
 'Danger':float, 'Alert':float}
 df = df.astype(convert_dict)
@@ -104,35 +107,35 @@ engine = create_engine("mysql+pymysql://root:@localhost/myfloodlaravel")
 df.to_sql('selangorscrape', con = engine, if_exists='replace')
 
 
-# for i, row in df.iterrows():
-# 	if row['smsAlert'] == 'sms':
-# 		x = df['District'][i]
-# 		print(x)
-# 		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood (Alert)',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
-# 		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
-# 		result = concursor.fetchall()
-# 		print(result)
-# 		for i in range(len(result)):
-# 			message = client.messages.create(messaging_service_sid='MG2815ed8745527fe1d9366bdf1cbbfc4d', body=newformat ,to=result[i])
+for i, row in df.iterrows():
+	if row['smsAlert'] == 'sms':
+		x = df['District'][i]
+		print(x)
+		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood - Alert Level',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
+		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
+		result = concursor.fetchall()
+		print(result)
+		for i in range(len(result)):
+			message = client.messages.create(messaging_service_sid='MG2815ed8745527fe1d9366bdf1cbbfc4d', body=newformat ,to=result[i])
 
-# for i, row in df.iterrows():
-# 	if row['smsWarning'] == 'sms':
-# 		x = df['District'][i]
-# 		print(x)
-# 		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood (Warning)',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
-# 		concursor.execute("SELECT phonenum FROM users WHERE status = 1 AND district = '{x}'".format(x=x))
-# 		result = concursor.fetchall()
-# 		print(result)
-# 		for i in range(len(result)):
-# 			message = client.messages.create(messaging_service_sid='MG2815ed8745527fe1d9366bdf1cbbfc4d', body=newformat ,to=result[i])
+for i, row in df.iterrows():
+	if row['smsWarning'] == 'sms':
+		x = df['District'][i]
+		print(x)
+		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood - Warning Level',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
+		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
+		result = concursor.fetchall()
+		print(result)
+		for i in range(len(result)):
+			message = client.messages.create(messaging_service_sid='MG2815ed8745527fe1d9366bdf1cbbfc4d', body=newformat ,to=result[i])
 
-# for i, row in df.iterrows():
-# 	if row['smsDanger'] == 'sms':
-# 		x = df['District'][i]
-# 		print(x)
-# 		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood (Danger)',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
-# 		concursor.execute("SELECT phonenum FROM users WHERE status = 1 AND district = '{x}'".format(x=x))
-# 		result = concursor.fetchall()
-# 		print(result)
-# 		for i in range(len(result)):
-# 			message = client.messages.create(messaging_service_sid='MG2815ed8745527fe1d9366bdf1cbbfc4d', body=newformat ,to=result[i])
+for i, row in df.iterrows():
+	if row['smsDanger'] == 'sms':
+		x = df['District'][i]
+		print(x)
+		newformat = ("{}\n{}\n{}\n{}\n{}".format('Alert Warning from Myflood - Danger Level',df['Station Name'][i], df['CurrentWaterLevel'][i], df['Last Update'][i],'Check Website for More Information'))
+		concursor.execute("SELECT phonenum FROM users WHERE district = '{x}'".format(x=x))
+		result = concursor.fetchall()
+		print(result)
+		for i in range(len(result)):
+			message = client.messages.create(messaging_service_sid='MG2815ed8745527fe1d9366bdf1cbbfc4d', body=newformat ,to=result[i])
